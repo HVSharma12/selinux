@@ -58,8 +58,9 @@ SOFTWARE.
   </style>
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
+html { -webkit-text-size-adjust: 100%; }
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -70,7 +71,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -239,6 +240,10 @@ enabled, the policy is not changed.</p>
 <p>This uses the <a
 href="https://docs.ansible.com/ansible/latest/collections/ansible/posix/selinux_module.html#ansible-collections-ansible-posix-selinux-module">selinux</a>
 module to manage the SELinux mode and policy.</p>
+<p><strong>NOTE:</strong> On EL 8 and later, the role will use the
+<code>update_kernel_param: true</code> of the <code>selinux</code>
+module to update the kernel command line in order to ensure the selinux
+state update is applied and persistent upon reboot.</p>
 <h2 id="selinux_booleans">selinux_booleans</h2>
 <p>Manage the state of SELinux booleans. This is a <code>list</code> of
 <code>dict</code>, where each <code>dict</code> is in the same format as
@@ -273,6 +278,8 @@ SELinux user record range.</li>
 </ul>
 <p>Individual modifications can be dropped by setting <code>state</code>
 to <code>absent</code>.</p>
+<p>Note: The <code>selinux_fcontexts</code> option does not work in
+container builds.</p>
 <h2 id="selinux_ports">selinux_ports</h2>
 <p>Manage the state of SELinux port policy. This is a <code>list</code>
 of <code>dict</code>, where each <code>dict</code> is in the same format
@@ -351,6 +358,8 @@ Enterprise Linux 6</p>
 <p><strong>Note:</strong> Managing modules is idempotent only on Fedora,
 and EL 8.6 and later. You can manage modules on older releases, but it
 will not be idempotent.</p>
+<p>Note: The <code>selinux_modules</code> option does not work in
+container builds.</p>
 <h2
 id="selinux_transactional_update_reboot_ok">selinux_transactional_update_reboot_ok</h2>
 <p>This variable is used to handle reboots required by transactional
